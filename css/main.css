@@ -1,0 +1,44 @@
+
+body
+{
+ background-color: #e6e6e6;
+
+}
+
+#TopLine
+{
+ background-color: #e6f7ff;
+}
+
+
+ #TaddP
+{
+ background-color: #cceeff;
+
+}
+
+
+#TListTask
+{
+ background-color: #f2f2f2;
+ // height: 600px;
+  width: 600px;
+
+}
+
+
+
+
+
+#tProject {
+    margin:0;
+    padding:0;
+   
+   
+}
+
+ #TDtasks {
+    border-bottom: 1px solid #AAAAAA; /* Линия снизу */
+   }
+
+   
