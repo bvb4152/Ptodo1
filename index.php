@@ -1,5 +1,5 @@
 <?php
-ini_set('display_errors', 1);
+//ini_set('display_errors', 1);
 
 
 
@@ -11,9 +11,6 @@ $db = new DB;
 $auth= new Auth;
 
 //echo $auth->GetAuthStatus();
-
-
-
 //$result = $db->run("SELECT idUser FROM users ");
  
 
