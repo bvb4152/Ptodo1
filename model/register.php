@@ -39,14 +39,14 @@ class RegisterUser
       if ($this->u_pass!=$this->u_cpass)    {$this->msg="<font color=red>Password and confirm not match</font>"; return; }
 
       //check dublicate in DB
-      $result = $db->run("SELECT idUser FROM users WHERE email like ".sql_prepare($this->u_email)." ");
+      $result = $db->run("SELECT idUser FROM users WHERE email like ".$db->sql_prepare($this->u_email)." ");
       if ($result->num_rows>0)              {$this->msg="<font color=red>Email already exists</font>";           return; }
       $result->close();
 
 
       $db->run("INSERT INTO users( Name, email, pass, Hash) 
-      	                 VALUES (".sql_prepare($this->u_name).",
-      	                         ".sql_prepare($this->u_email).",
+      	                 VALUES (".$db->sql_prepare($this->u_name).",
+      	                         ".$db->sql_prepare($this->u_email).",
       	                         '".md5($this->u_cpass)."',
       	                         '') ");
 

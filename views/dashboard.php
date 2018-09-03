@@ -14,11 +14,16 @@ $Dashb = new DashBoard();
 
 <!-- List Project -->
     <td align="left" width=20% valign=top style="padding-left: 10px;">
-        <a href="index.php?action=dashboard&FilterProject=today">Today</a><br>
-        <a href="index.php?action=dashboard&FilterProject=SevenDays">Next 7 days</a><br>
-        <a href="index.php?action=dashboard&FilterProject=all"  >All Projects</a><br>
-        <br>
-        <br>
+    <?php
+    if (@$_REQUEST["arhiv"]!="1")
+    echo ''.
+        '<a href="index.php?action=dashboard&FilterProject=today">Today</a><br>'.
+        '<a href="index.php?action=dashboard&FilterProject=SevenDays">Next 7 days</a><br>'.
+        '';
+    ?>
+       <a href="index.php?action=dashboard&FilterProject=all<?php echo '&arhiv='.@$_REQUEST["arhiv"] ?>"  >All Projects</a><br>
+    <br>
+    <br>
      
        <table border=0 ID="tProject" >
      <?php
@@ -43,14 +48,19 @@ $Dashb = new DashBoard();
           else {
           
           if ($row["CT"]>0) $row["CT"]=" (".$row["CT"].")";
-          echo'<tr><td><font color="'.$row["color"].'"> &#9679</font> <a href="index.php?action=dashboard&FilterProject='.$row["IDproject"].'">'.$row["Name"].$row["CT"].'</a></td>'.
-          '<td>'.
+          echo'<tr><td><font color="'.$row["color"].'"> &#9679</font> <a href="index.php?action=dashboard&arhiv='.@$_REQUEST["arhiv"].'&FilterProject='.$row["IDproject"].'">'.$row["Name"].$row["CT"].'</a></td>'.
+          '<td>';
+          
+           if (@$_REQUEST["arhiv"]!="1")
+           echo  
           '<font size=-4 >'.
              ' <a href="index.php?action=dashboard&FilterProject='.$_REQUEST['FilterProject'].'&idproject='.$row["IDproject"].'&projectevent=edit">Edit</a>'.
              ' <a href="index.php?action=dashboard&FilterProject='.$_REQUEST['FilterProject'].'&idproject='.$row["IDproject"].'&projectevent=del">Del</a>'.
-          '</font>'.
-          '</td>'.
-          '</tr>';
+          '</font>';
+          
+
+          echo '</td>'.
+               '</tr>';
           }
 
          }
@@ -59,10 +69,10 @@ $Dashb = new DashBoard();
      ?>
       </table>
 
-
      <br>
      <br>
      <br>
+     <?php  if (@$_REQUEST["arhiv"]!="1") {?>
      <table width=100%  ID="TaddP" Name="TaddP" border=0 style="">
      <form action="index.php?action=dashboard<?php echo '&FilterProject='.$_REQUEST['FilterProject'] ?>" method="POST">
      <tr><td><b>Add Project</b></td></tr>
@@ -76,6 +86,8 @@ $Dashb = new DashBoard();
      </form>
      </table>
 
+     <?php }  ?>
+
      </td>
  
 
@@ -86,39 +98,65 @@ $Dashb = new DashBoard();
      
     <table width=100%  ID="TListTask"   border=0 style="">
     <tr>
-       <td>Task</td>
+       <td><i>Task</td>
        <td></td>
-       <td>Deadline, day</td>
-       <td>Project</td>
+       <td><i>Deadline, day</td>
+       <td><i>Project</td>
        <td></td>
     </tr>
     
      <?php
 
       foreach ($Dashb->aTasks as $row) {
-      
-     //overtime
-      $mday=(int)ceil( (strtotime($row["DeadLine"])-time())/(60*60*24));
-      if ($mday<0) $line_color='style="color:red;"';
-              else $line_color='';
 
+     if (@$_REQUEST["taskevent"]=="edit"  && $_REQUEST["idtask"]==$row["IDTask"] )
+     {
 
-      echo '<tr '.$line_color.' ">'.
-                '<td id="TDtasks" ><font color="'.$row["prioritycolor"].'"><b title="'.$row["priorityname"].'">&#9632;</b></font>'.' <big>'.$row["tasksName"].'</big></td>'.
-                '<td id="TDtasks" > <a href="index.php?action=dashboard&FilterProject='.$_REQUEST['FilterProject'].'&idtask='.$row["IDTask"].'&taskevent=done">Done</a>'.'</td>'.
-                '<td id="TDtasks"  title="'.$row["DeadLine"].'" > '.$mday.'</td>'.
-                '<td id="TDtasks" ><font color="'.$row["projectColor"].'"> &#9679</font> '.$row["projectsName"].' </td>'.
-                '<td id="TDtasks" >'.
-                    
-                    '<font size=-4 >'.
-                        ' <a href="index.php?action=dashboard&FilterProject='.$_REQUEST['FilterProject'].'&idtask='.$row["IDTask"].'&taskevent=edit">Edit</a>'.
-                        ' <a href="index.php?action=dashboard&FilterProject='.$_REQUEST['FilterProject'].'&idtask='.$row["IDTask"].'&taskevent=del">Del</a>'.
-                   '</font>'.
-                '</td>'.
+            //edit form
+            echo '<form action="index.php?action=dashboard&FilterProject='.$_REQUEST['FilterProject'].'" method="POST">';
+            echo '<tr><td colspan=5>';
+            echo '<input type="text" required size="5" name="TaskName"   value="'.$row["tasksName"].'" >';
+            $Dashb->ListProject($row["IDproject"]) ; 
+            $Dashb->ListTasksPriority($row["IDTasksPriority"]);
 
-            '</tr>';
+            echo '<input type="date" Name="Date" value="'.$row["DeadLine"].'"> ';
+            echo '<input type="Submit" Name="Submit" value="Save">';
+            echo '<input type="hidden" Name="IDTask" value="'.$row["IDTask"].'">';
+            echo '<input type="hidden" Name="taskevent" value="save">';
+            echo '</tr>';
+            echo '</form>';
+
+     }
+
+      else {
+            //overtime
+            $mday=(int)ceil( (strtotime($row["DeadLine"])-time())/(60*60*24));
+            if ($mday<0) $line_color='style="color:red;"';
+                    else $line_color='';
+            echo '<tr '.$line_color.' ">'.
+                    '<td id="TDtasks" ><font color="'.$row["prioritycolor"].'"><b title="'.$row["priorityname"].'">&#9632;</b></font>'.' <big>'.$row["tasksName"].'</big></td>';
+               echo '<td id="TDtasks" >';
+                      if (@$_REQUEST["arhiv"]!="1")
+                      echo ' <a href="index.php?action=dashboard&FilterProject='.$_REQUEST['FilterProject'].'&idtask='.$row["IDTask"].'&taskevent=done">Done</a>'.'';
+              echo '</td>';
+            
+            echo '<td id="TDtasks"  title="'.$row["DeadLine"].'" > '.$mday.'</td>'.
+                    '<td id="TDtasks" ><font color="'.$row["projectColor"].'"> &#9679</font> '.$row["projectsName"].' </td>'.
+                    '<td id="TDtasks" > &nbsp;';
+                      
+                     if (@$_REQUEST["arhiv"]!="1")
+                     echo '<font size=-4 >'.
+                          ' <a href="index.php?action=dashboard&FilterProject='.$_REQUEST['FilterProject'].'&idtask='.$row["IDTask"].'&taskevent=edit">Edit</a>'.
+                          ' <a href="index.php?action=dashboard&FilterProject='.$_REQUEST['FilterProject'].'&idtask='.$row["IDTask"].'&taskevent=del">Del</a>'.
+                     '</font>';
+
+            echo '</td>'.
+                '</tr>';
+           }            
 
          }
+
+
 
 
      ?>
@@ -128,7 +166,7 @@ $Dashb = new DashBoard();
     <tr>
        <td colspan=5>
            
-     
+            <?php  if (@$_REQUEST["arhiv"]!="1") {?>
             <table width=100%  ID="TaddP" Name="TaddP" border=0 style="">
             <form action="index.php?action=dashboard<?php echo '&FilterProject='.$_REQUEST['FilterProject'] ?>" method="POST">
             <tr><td><b>Add task</b></td></tr>
@@ -141,10 +179,9 @@ $Dashb = new DashBoard();
                     <input type="Submit" Name="Submit" value="Add">
 
             </td></tr>
-           
-
             </form>
             </table>
+            <?php }  ?>
 
        </td>
     </tr>

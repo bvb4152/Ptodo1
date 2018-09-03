@@ -7,9 +7,21 @@
     <title>TODO</title>
   </head>
   <body>
-<table width=100% border=0 >
+<table width=100% border=0 cellspacing="0" cellpadding="0" >
 <tr ID="TopLine" >
 <td><h1>TODO</h1></td>	
+<td align="right"> 
+	
+<?php 
+  
+
+  if (($_REQUEST["action"]=="dashboard") &&  @$_REQUEST["arhiv"]=="1" )
+  	echo '<a href="index.php?action=dashboard&arhiv=0">Now</a> ';
+  else 
+  	echo '<a href="index.php?action=dashboard&arhiv=1">Arhiv</a> ';
+?>
+
+</td>	
 <td align="right"> 
 
 <?php
