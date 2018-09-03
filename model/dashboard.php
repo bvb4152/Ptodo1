@@ -108,8 +108,11 @@ class DashBoard
        $taskFilter="";
        if (!isset($_REQUEST['FilterProject']	)) $_REQUEST['FilterProject'] = "today";
 
-       if ($_REQUEST['FilterProject']=="today") $taskFilter=" AND (tasks.DeadLine>= CURDATE()  AND tasks.DeadLine<(CURDATE() + 1) )";
-       if ($_REQUEST['FilterProject']=="SevenDays") $taskFilter=" AND (tasks.DeadLine>= CURDATE()  AND tasks.DeadLine<(CURDATE() + 7) )";
+       //if ($_REQUEST['FilterProject']=="today") $taskFilter=" AND  (tasks.DeadLine>= CURDATE()  AND   tasks.DeadLine<(CURDATE() + 1) )";
+       if ($_REQUEST['FilterProject']=="today") $taskFilter=" AND  tasks.DeadLine<(CURDATE() + 1) ";
+       //if ($_REQUEST['FilterProject']=="SevenDays") $taskFilter=" AND (tasks.DeadLine>= CURDATE()  AND tasks.DeadLine<(CURDATE() + 7) )";
+       if ($_REQUEST['FilterProject']=="SevenDays") $taskFilter=" AND  tasks.DeadLine<(CURDATE() + 7) ";
+
        if ($_REQUEST['FilterProject']=="all")   $taskFilter=" ";
 
        if (@$_REQUEST["arhiv"]=="1") $taskFilter=" ";

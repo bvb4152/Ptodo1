@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Сен 03 2018 г., 15:20
+-- Время создания: Сен 03 2018 г., 15:37
 -- Версия сервера: 10.1.35-MariaDB
 -- Версия PHP: 7.2.9
 
@@ -84,7 +84,8 @@ INSERT INTO `tasks` (`IDTask`, `IDProject`, `DeadLine`, `IDTasksStatus`, `IDTask
 (16, 2, '2018-09-04', 1, 3, 'Task'),
 (17, 8, '2018-09-04', 1, 2, 'Task7'),
 (18, 8, '2018-09-06', 1, 1, 'Task8'),
-(19, 13, '2018-09-04', 1, 1, 'Task9');
+(19, 13, '2018-09-04', 1, 1, 'Task9'),
+(20, 8, '2018-09-03', 1, 1, 'Task18');
 
 -- --------------------------------------------------------
 
@@ -204,7 +205,7 @@ ALTER TABLE `projects`
 -- AUTO_INCREMENT для таблицы `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `IDTask` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `IDTask` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
